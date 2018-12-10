@@ -20,7 +20,7 @@
             <div id="text" style="min-height: 500px"></div>
         </div>
         <div class="btn">
-            <Button type="info">发表文章</Button>
+            <Button type="info" @click="submitArt">发表文章</Button>
         </div>
     </div>
 </template>
@@ -33,7 +33,8 @@
             return {
                 artType: [],
                 selectV:'',
-                title:''
+                title:'',
+                editor:''
             }
         },
         created(){
@@ -50,9 +51,113 @@
                 });
         },
         mounted(){
-            const editor = new Editor("#toolbar","#text");
-            editor.customConfig.zIndex = 0;//这个富文本作者思想出问题了z-index设个10000也是醉了
-            editor.create();
+            this.uploadConfig();
+        },
+        methods:{
+            submitArt(){
+                /*发送数据*/
+                const data = this.getContent();
+                if(data){
+                    this.$axios({
+                        method:'put',
+                        url:'/articlePublish',
+                        data,
+                    })
+                        .then(data => {
+                            const _this = this;
+                            const status = data.data.status;
+                            if(status){
+                                this.$Notice.success({
+                                    title:'Success',
+                                    desc:'恭喜 你已经发表了一篇文章 你可以继续发表',
+                                    duration:3,
+                                    onClose(){
+                                        _this.selectV = '';
+                                        _this.title = '';
+                                        _this.editor.txt.clear();
+                                    }
+                                })
+                            }
+                            else{
+                                this.$Notice.error({
+                                    title:'Error',
+                                    desc:'因为不可抗力 你的文章没有发表成功',
+                                })
+                            }
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+                }
+            },
+            getTypeId(type){
+                /*获取选择的文章类型ID*/
+                const newaarr = this.artType.filter(item=>{
+                    return item.type === type;
+                });
+                const id = newaarr[0]._id;
+                return id;
+            },
+            getContent(){
+                /*获取文章内容*/
+                const selectV = this.selectV;
+                const title = this.title;
+                const content = this.editor.txt.html();
+
+                if(!selectV){
+                    this.$Message.warning({
+                        content:'请选择文章类型'
+                    });
+                    return false;
+                }
+                else if(!title){
+                    this.$Message.warning({
+                        content:'请确定文章名'
+                    });
+                    return false;
+                }
+                else if(content === '<p><br></p>' || content === '' || content === null){
+                    this.$Message.warning({
+                        content:'搞啥子 你还没写文章呢！'
+                    });
+                    return false;
+                }
+                const id = this.getTypeId(selectV);
+                return {
+                    selectV,
+                    title,
+                    content,
+                    id
+                };
+            },
+            uploadUrl(){
+                return 'http://localhost:3000/upload/artImg';
+            },
+            uploadConfig(){
+                const _this = this;
+                this.editor = new Editor("#toolbar","#text");
+                this.editor.customConfig.zIndex = 0;//这个富文本作者思想出问题了z-index设个10000也是醉了
+                this.editor.customConfig.uploadImgServer = this.uploadUrl();
+                this.editor.customConfig.uploadImgMaxSize = 10 * 1024 * 1024;
+                this.editor.customConfig.uploadImgMaxLength = 1;
+                this.editor.customConfig.withCredentials = true;
+                this.editor.customConfig.customAlert = function (info) {
+                    // info 是需要提示的内容
+                    _this.$Message.error({
+                        content:info
+                    });
+                };
+                this.editor.customConfig.uploadImgHooks = {
+                    before: function (xhr, editor, files) {
+                        _this.$Loading.start();
+                    },
+                    success: function (xhr, editor, result) {
+                        _this.$Loading.finish();
+                        // console.log(result);
+                    },
+                };
+                this.editor.create();
+            },
         }
     }
 </script>

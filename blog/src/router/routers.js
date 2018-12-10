@@ -30,6 +30,32 @@ const routes = [
                 },
                 name: 'artManage',
                 component: (resolve) => require(['../components/personalComponents/artManage'],resolve),
+                children:[
+                    {
+                        path:'artList',
+                        meta:{
+                            title:'个人中心-文章列表'
+                        },
+                        name:'artList',
+                        component: (resolve) => require(['../components/personalComponents/articleList'],resolve),
+                    },
+                    {
+                        path:'artListType/:id',
+                        meta:{
+                            title:'个人中心-文章列表'
+                        },
+                        name:'artListType',
+                        component: (resolve) => require(['../components/personalComponents/artSelect'],resolve),
+                    }
+                ]
+            },
+            {
+                path:'article/:id',
+                meta:{
+                    title: '个人中心-修改文章'
+                },
+                name: 'updateArt',
+                component: (resolve) => require(['../components/personalComponents/updateArt'],resolve),
             },
             {
                 path:'article',

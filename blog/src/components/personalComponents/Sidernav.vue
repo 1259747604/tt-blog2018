@@ -2,7 +2,7 @@
     <div class="sidernav">
         <Menu :theme="theme3" active-name="1" width="auto">
             <MenuGroup title="个人中心">
-                <MenuItem name="1" :to="{name:'artManage'}">
+                <MenuItem name="1" :to="{name:'artList'}">
                     <Icon type="md-document" />
                     文章管理
                 </MenuItem>

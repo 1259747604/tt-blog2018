@@ -19,7 +19,7 @@ Vue.use(iView,{
 iView.LoadingBar.config({
     color: '#40B080',
     failedColor: '#f0ad4e',
-    height: 3
+    height: 5
 });
 
 /**/

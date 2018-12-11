@@ -23,7 +23,7 @@ app.use(cors({
 app.keys = ["tt is a good boy"];
 const CONFIG = {
     key : "tt is a bad boy",//密匙
-    maxAge : 3600000,//过期时间 1小时
+    maxAge : 7200000,//过期时间 2小时
     autoCommit : true,//自动提交头文件
     overwrite : true,//是否覆盖
     httpOnly : true,//不允许客户端读取

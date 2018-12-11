@@ -97,6 +97,12 @@ exports.uploadImg = async (ctx) => {
 exports.artPublish = async (ctx) => {
     /*获取文章数据*/
     const data = ctx.request.body;
+
+    /*类型计数器增加*/
+    await ArtType.updateOne({_id:data.id},{$inc:{count:1}})
+        .exec(err => {
+            if(err) return console.log(err);
+        });
     /*保存*/
     await new Article({
         title: data.title,
@@ -141,7 +147,13 @@ exports.getArticle = async (ctx) => {
 exports.delArticle = async (ctx) => {
     /*获取要删除的id*/
     const _id = ctx.request.body.id;
-
+    /*获取类型Id*/
+    const typeId = ctx.request.body.typeId;
+    /*更新计数器*/
+    await ArtType.updateOne({_id:typeId},{$inc:{count:-1}})
+        .exec(err => {
+            if(err) return console.log(err);
+        });
     /*删除*/
     await Article.findOneAndDelete({_id})
         .then(data => {
@@ -182,7 +194,19 @@ exports.updateArticle = async (ctx) => {
     const type = data.typeId;//文章类型
     const title = data.title;//文章标题
     const content = data.content;//文章内容
+    const initTypeId = data.initTypeId;//更新前文章id;
 
+    /*如果不等于即更新计数*/
+    if(type !== initTypeId){
+        await ArtType.updateOne({_id:type},{$inc:{count:1}})
+            .exec(err => {
+                if(err) return console.log(err);
+            });
+        await ArtType.updateOne({_id:initTypeId},{$inc:{count:-1}})
+            .exec(err => {
+                if(err) return console.log(err);
+            });
+    }
     await Article.updateOne({_id},{$set:{type,title,content}})
         .then(data =>{
             ctx.body = {

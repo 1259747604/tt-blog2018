@@ -6,7 +6,7 @@
             </Col>
             <Col span="4">
                 <l-btn v-if="showBtn"></l-btn>
-                <per-btn v-if="showperbtn"></per-btn>
+                <per-btn v-else></per-btn>
             </Col>
         </Row>
         <router-view/>
@@ -15,11 +15,11 @@
 
 <script>
     /*头部导航*/
-    import hNav from "./components/hnva";
+    import hNav from "./components/nav/hnva";
     /*登录按钮*/
-    import lBtn from './components/loginbtn';
+    import lBtn from './components/btn/loginbtn';
     /*个人中心 退出按钮*/
-    import perBtn from './components/personalbtn';
+    import perBtn from './components/btn/personalbtn';
 
     export default {
         name: 'App',
@@ -33,15 +33,15 @@
             this.$axios.post('/loginstatus')
                 .then(data => {
                     /*获取状态*/
-                    const status = data.data.status;
+                    const status = data.data.keepStatus;
 
-                    if(status){
+                    if(status === 200){
                         const session = data.data.session;
                         this.$store.commit('getSession',session);
-                        this.$store.commit('changeStatus',true);
+                        this.$store.commit('changeSessionIsNew',false);
                     }
                     else{
-                        this.$store.commit('changeStatus',false);
+                        this.$store.commit('changeSessionIsNew',true);
                     }
                 })
                 .catch(err => {
@@ -50,11 +50,8 @@
         },
         computed:{
             showBtn(){
-                return !this.$store.state.status;
+                return this.$store.state.sessionIsNew;
             },
-            showperbtn(){
-                return this.$store.state.status;
-            }
         }
     }
 </script>

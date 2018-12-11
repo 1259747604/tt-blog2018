@@ -65,6 +65,9 @@
             getData(){
                 this.$axios.get('/artType')
                     .then(data => {
+                        if(data.data.keepStatus === 408){
+                            return this.$store.commit('changeSessionIsNew',true);
+                        }
                         const status = data.data.status;
                         if(status){
                             this.data = data.data.data;
@@ -84,6 +87,9 @@
                 }
                 this.$axios.put('/newType',{type:val})
                     .then(data => {
+                        if(data.data.keepStatus === 408){
+                            return this.$store.commit('changeSessionIsNew',true);
+                        }
                         const status = data.data.status;
                         const _this = this;
                         if(status){
@@ -117,6 +123,9 @@
                     data:{id}
                 })
                     .then(data => {
+                        if(data.data.keepStatus === 408){
+                            return _this.$store.commit('changeSessionIsNew',true);
+                        }
                         const status = data.data.status;
                         if(status){
                             return this.$Message.success({

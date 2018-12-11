@@ -41,6 +41,9 @@
             /*获取类型*/
             this.$axios.get('/artType')
                 .then(data => {
+                    if(data.data.keepStatus === 408){
+                        return this.$store.commit('changeSessionIsNew',true);
+                    }
                     const status = data.data.status;
                     if(status){
                         this.artType = data.data.data;
@@ -64,6 +67,9 @@
                         data,
                     })
                         .then(data => {
+                            if(data.data.keepStatus === 408){
+                                return this.$store.commit('changeSessionIsNew',true);
+                            }
                             const _this = this;
                             const status = data.data.status;
                             if(status){

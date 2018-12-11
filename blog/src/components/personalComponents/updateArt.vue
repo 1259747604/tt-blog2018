@@ -34,7 +34,8 @@
                 artType: [],
                 selectV:'',
                 title:'',
-                editor:''
+                editor:'',
+                initTypeId:''
             }
         },
         created(){
@@ -59,11 +60,15 @@
                 /*获取文章数据*/
                 this.$axios.get(`/article/up/${this.$route.params.id}`)
                     .then(data => {
+                        if(data.data.keepStatus === 408){
+                            return this.$store.commit('changeSessionIsNew',true);
+                        }
                         const status = data.data.status;
                         if(status){
                             const art = data.data.data[0];
                             this.selectV = art.type.type;
                             this.title = art.title;
+                            this.initTypeId = art.type._id;
                             this.editor.txt.html(art.content);
                         }
                     })
@@ -81,6 +86,9 @@
                         data,
                     })
                         .then(data => {
+                            if(data.data.keepStatus === 408){
+                                return this.$store.commit('changeSessionIsNew',true);
+                            }
                             const _this = this;
                             const status = data.data.status;
                             if(status){
@@ -89,7 +97,7 @@
                                     desc:'恭喜 你已经更新成功',
                                     duration:3,
                                     onClose(){
-                                        _this.$router.push('/personal/artManage/artList');
+                                        _this.$router.push('/personal/artManage');
                                         /*_this.selectV = '';
                                         _this.title = '';
                                         _this.editor.txt.clear();*/
@@ -146,6 +154,7 @@
                     title,
                     content,
                     typeId,
+                    initTypeId:this.initTypeId,
                     id:this.$route.params.id
                 };
             },

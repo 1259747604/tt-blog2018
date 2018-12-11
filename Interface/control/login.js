@@ -47,18 +47,29 @@ exports.login = async (ctx) => {
 };
 
 /*保持登录*/
-exports.home = async (ctx) => {
+exports.keepLogin = async (ctx,next) => {
     if(ctx.session.isNew){
         return ctx.body = {
-            status : 0
+            keepStatus : 408
         }
     }
+    await next();
+};
+
+/*首页*/
+exports.home = async (ctx) => {
     ctx.body = {
         session: ctx.session,
-        status : 1
+        keepStatus : 200
     }
 };
 
+/*个人中心*/
+exports.personal = async (ctx) =>{
+    ctx.body = {
+        keepStatus : 200
+    }
+};
 
 /*退出登录*/
 exports.signOut = async (ctx) => {

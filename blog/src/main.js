@@ -3,15 +3,27 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './Store/index'//vuex
+import iView from 'iview';
+import 'iview/dist/styles/iview.css';
+import axios from 'axios';
+import cookie from 'js-cookie';
+import echarts from 'echarts';
 
 Vue.config.productionTip = false;
 
-/*vuex*/
-import store from './vuex/index'
+/*基本请求地址*/
+axios.defaults.baseURL = 'http://127.0.0.1:3000';
+Vue.prototype.$axios = axios;
+axios.defaults.withCredentials = true;
 
-/*iview*/
-import iView from 'iview';
-import 'iview/dist/styles/iview.css';
+/*cookie*/
+Vue.prototype.Cookies = cookie;
+
+/*echarts*/
+Vue.prototype.echarts = echarts;
+
+/*iView*/
 Vue.use(iView,{
     transfer: true,
     size: 'large'
@@ -22,10 +34,7 @@ iView.LoadingBar.config({
     height: 5
 });
 
-/**/
-
-
-/*进入对应路由前*/
+/*页面进度条*/
 router.beforeEach((to, from, next) => {
     iView.LoadingBar.start();//加载进度条
     window.document.title = to.meta.title;
@@ -34,7 +43,6 @@ router.beforeEach((to, from, next) => {
 router.afterEach(route => {
     iView.LoadingBar.finish();
 });
-
 
 /* eslint-disable no-new */
 new Vue({

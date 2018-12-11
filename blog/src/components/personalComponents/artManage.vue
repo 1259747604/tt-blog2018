@@ -13,11 +13,6 @@
 <script>
     export default {
         name: "Manage",
-        beforeRouteEnter (to, from, next) {
-            next(vm => {
-                vm.$router.push('/personal/artManage/artList')
-            })
-        },
         data () {
             return {
                 artType: [],
@@ -26,18 +21,24 @@
         },
         created(){
             /*获取类型*/
-            this.$axios.get('/artType')
-                .then(data => {
-                    const status = data.data.status;
-                    if(status){
-                        this.artType = data.data.data;
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                });
+            this.getType();
         },
         methods:{
+            getType(){
+                this.$axios.get('/artType')
+                    .then(data => {
+                        if(data.data.keepStatus === 408){
+                            return this.$store.commit('changeSessionIsNew',true);
+                        }
+                        const status = data.data.status;
+                        if(status){
+                            this.artType = data.data.data;
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            },
             select(v){
                 const data = this.artType.filter(item => {
                     return item.type === v;

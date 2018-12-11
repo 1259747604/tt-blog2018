@@ -5,7 +5,7 @@ const routes = [
             title: 'TT首页'
         },
         name: 'home',
-        component: (resolve) => require(['../components/home'],resolve),
+        component: (resolve) => require(['../components/Pages/Home'],resolve),
     },
     {
         path: '/login',
@@ -13,7 +13,7 @@ const routes = [
             title: '登录页'
         },
         name: 'login',
-        component: (resolve)=>require(['../components/loginPage'],resolve),
+        component: (resolve)=>require(['../components/Pages/loginPage'],resolve),
     },
     {
         path: '/personal',
@@ -21,8 +21,17 @@ const routes = [
             title: '个人中心'
         },
         name: 'personal',
-        component: (resolve)=>require(['../components/personal'],resolve),
+        component: (resolve)=>require(['../components/Pages/personal'],resolve),
+        redirect: {name: 'analyses'},
         children:[
+            {
+                path:'analyses',
+                meta:{
+                    title: '个人中心-文章分析'
+                },
+                name: 'analyses',
+                component: (resolve) => require(['../components/personalComponents/analyseArt'],resolve),
+            },
             {
                 path:'artManage',
                 meta:{
@@ -47,7 +56,8 @@ const routes = [
                         name:'artListType',
                         component: (resolve) => require(['../components/personalComponents/artSelect'],resolve),
                     }
-                ]
+                ],
+                redirect: { name: 'artList' }
             },
             {
                 path:'article/:id',

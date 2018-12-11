@@ -99,6 +99,7 @@
             filterData(list){
                 /*对初始数据进行处理*/
                 let arr = list.map(item => {
+                    item.typeId = item.type._id;
                     item.type = item.type.type;
                     item.created = new Date(item.created).toLocaleDateString();
                     item.updatedAt = new Date(item.updatedAt).toLocaleDateString();
@@ -112,6 +113,7 @@
             },
             remove (data) {
                 const _this = this;
+
                 this.$Modal.confirm({
                     title:`删除${data.title}`,
                     content:'你可想好了 删了可就没了',
@@ -120,9 +122,12 @@
                         _this.$axios({
                             method:'delete',
                             url:'/article',
-                            data:{id}
+                            data:{id,typeId:data.typeId}
                         })
                             .then(data => {
+                                if(data.data.keepStatus === 408){
+                                    return _this.$store.commit('changeSessionIsNew',true);
+                                }
                                 const status = data.data.status;
                                 if(status){
                                     _this.$Notice.success({

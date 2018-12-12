@@ -1,5 +1,12 @@
 const routes = [
     {
+        path:'*',
+        meta:{
+            title: '404'
+        },
+        component: (resolve) => require(['../components/404/404'],resolve),
+    },
+    {
         path: '/',
         meta:{
             title: 'TT首页'

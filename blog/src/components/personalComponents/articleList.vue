@@ -1,6 +1,9 @@
 <template>
     <div class="artList">
         <Table border :columns="columns" :data="data"></Table>
+        <div class="page">
+            <Page :total="total" show-elevator @on-change="change"/>
+        </div>
     </div>
 </template>
 
@@ -67,7 +70,8 @@
                     }
                 ],
                 initData:[],
-                data: []
+                data: [],
+                total:0
             }
         },
         created(){
@@ -84,6 +88,7 @@
                             /*得到初始数据*/
                             const list = data.data.data;
                             this.initData = list;//存到一个可能以后会用到的数组里
+                            this.total = data.data.total;
                             this.filterData(list);
                         }
                     })
@@ -94,11 +99,14 @@
             filterData(list){
                 /*对初始数据进行处理*/
                 let arr = list.map(item => {
-                    item.typeId = item.type._id;
-                    item.type = item.type.type;
-                    item.created = new Date(item.created).toLocaleDateString();
-                    item.updatedAt = new Date(item.updatedAt).toLocaleDateString();
-                    return item;
+                    return {
+                        typeId : item.type._id,
+                        type : item.type.type,
+                        title: item.title,
+                        _id: item._id,
+                        created : new Date(item.created).toLocaleDateString(),
+                        updatedAt : new Date(item.updatedAt).toLocaleDateString(),
+                    };
                 });
                 this.data = arr;
             },
@@ -147,11 +155,26 @@
                             });
                     }
                 });
+            },
+            change(index){
+                const num = index;
+                this.$axios.get(`/article/page/${num}`)
+                    .then(data => {
+                        const status = data.data.status;
+                        if(status){
+                            /*得到初始数据*/
+                            const list = data.data.data;
+                            this.initData = list;//存到一个可能以后会用到的数组里
+                            this.filterData(list);
+                        }
+                    });
             }
         }
     }
 </script>
 
 <style scoped>
-
+    .page{
+        margin-top: 20px;
+    }
 </style>

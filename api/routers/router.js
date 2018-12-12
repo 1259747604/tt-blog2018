@@ -37,6 +37,9 @@ router.put('/articlePublish',login.keepLogin,article.artPublish);
 /*文章列表获取*/
 router.get('/article',login.keepLogin,article.getArticle);
 
+/*动态页数*/
+router.get('/article/page/:id',login.keepLogin,article.getArticle);
+
 /*文章删除*/
 router.delete('/article',login.keepLogin,article.delArticle);
 
@@ -48,6 +51,12 @@ router.post('/articleUp',login.keepLogin,article.updateArticle);
 
 /*文章类型选择*/
 router.get('/selectList/:id',login.keepLogin,article.selectsArt);
+
+/*文章类型选择切换页数*/
+router.get('/selectList/:id/:page',login.keepLogin,article.selectsArt);
+
+/*后台可视化所需数据*/
+router.get('/artAnalyse',login.keepLogin,article.analyseArt);
 
 /*导出*/
 module.exports = router;

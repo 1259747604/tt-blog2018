@@ -12,8 +12,9 @@
             </ul>
         </div>
         <Divider>图表</Divider>
-        <div id="main" style="width: 600px;height:400px;"></div>
-        <div id="main1" style="width: 600px;height:400px;"></div>
+        <div id="main" style="width: 500px;height:400px;"></div>
+        <div id="main1" style="width: 500px;height:400px;"></div>
+        <div id="main2" style="width: 500px;height:400px;"></div>
     </div>
 </template>
 
@@ -26,6 +27,7 @@
                 countArr: [],
                 typeArr: [],
                 pieArr: [],
+                lineArr: [],
                 colorArr: ['#37A2DA', '#32C5E9', '#67E0E3', '#9FE6B8', '#FFDB5C'
                     ,'#ff9f7f', '#fb7293', '#E062AE', '#E690D1', '#e7bcf3'
                     , '#9d96f5', '#8378EA', '#96BFFF','#dd6b66','#759aa0'
@@ -41,6 +43,7 @@
             constructCharts(){
                 const myChart = this.echarts.init(document.getElementById('main'));
                 const myChart1 = this.echarts.init(document.getElementById('main1'));
+                const myChart2 = this.echarts.init(document.getElementById('main2'));
 
                 // 饼状图
                 const option = {
@@ -117,21 +120,48 @@
                     ]
                 };
 
+                /*月统计图*/
+                const option2 = {
+                    title:{
+                        text:`${new Date().getFullYear()}月统计`,
+                        x: 'center'
+                    },
+                    color:'#334B5C',
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['1', '2', '3', '4', '5', '6', '7','8','9','10','11','12']
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        data: this.lineArr,
+                        type: 'line',
+                        areaStyle: {}
+                    }]
+                };
+
                 // 使用刚指定的配置项和数据显示图表。
                 myChart.setOption(option);
                 myChart1.setOption(option1);
+                myChart2.setOption(option2);
             },
             getData(){
-                this.$axios.get('/artType')
+                this.$axios.get('/artAnalyse')
                     .then(data => {
                         if(data.data.keepStatus === 408){
                             return this.$store.commit('changeSessionIsNew',true);
                         }
+
                         const status = data.data.status;
                         if(status){
+                            /*类型数据*/
                             this.initData = data.data.data;
-                            // console.log(this.initData);
                             this.filter(this.initData);
+
+                            /*月统计数据*/
+                            this.lineArr = data.data.data1[0].count;
                             this.constructCharts();
                             /*this.$nextTick(function () {
                                 this.randomColor();
@@ -206,8 +236,8 @@
     .list li:hover{
         transform: translateZ(10px);
     }
-    #main,#main1{
+    #main,#main1,#main2{
         display: inline-block;
-        margin-right: 100px;
+        margin-right: 40px;
     }
 </style>

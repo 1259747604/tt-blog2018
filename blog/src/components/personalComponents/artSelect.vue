@@ -1,6 +1,7 @@
 <template>
     <div class="artList">
         <Table border :columns="columns" :data="data"></Table>
+        <Page :total="total" show-elevator @on-change="change"/>
     </div>
 </template>
 
@@ -67,7 +68,9 @@
                     }
                 ],
                 initData:[],
-                data: []
+                data: [],
+                id: '',
+                total:0
             }
         },
         created(){
@@ -88,6 +91,10 @@
                             /*得到初始数据*/
                             const list = data.data.data;
                             this.initData = list;//存到一个可能以后会用到的数组里
+                            this.id = id;//类型id
+                            this.total = data.data.total;//得到总页码
+
+                            this.$parent.selectV = data.data.data[0].type.type || '';
                             this.filterData(list);
                             // this.$router.push(`/personal/artManage/artListType/${id}`);
                         }
@@ -152,6 +159,19 @@
                             });
                     }
                 });
+            },
+            change(index){
+                this.$axios.get(`/selectList/${this.id}/${index}`)
+                    .then(data => {
+                        const status = data.data.status;
+                        if(status){
+                            /*得到初始数据*/
+                            const list = data.data.data;
+                            this.initData = list;//存到一个可能以后会用到的数组里
+                            this.filterData(list);
+                        }
+                    })
+                    .catch(err => {console.log(err)})
             }
         }
     }

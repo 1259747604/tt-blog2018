@@ -76,7 +76,7 @@
                                 this.$Notice.success({
                                     title:'Success',
                                     desc:'恭喜 你已经发表了一篇文章 你可以继续发表',
-                                    duration:3,
+                                    duration:1.5,
                                     onClose(){
                                         _this.selectV = '';
                                         _this.title = '';

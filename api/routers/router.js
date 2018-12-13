@@ -58,5 +58,11 @@ router.get('/selectList/:id/:page',login.keepLogin,article.selectsArt);
 /*后台可视化所需数据*/
 router.get('/artAnalyse',login.keepLogin,article.analyseArt);
 
+/*请求旧密码*/
+router.post('/initPwd',login.keepLogin,login.initPwd);
+
+/*保存新密码*/
+router.post('/newPwd',login.keepLogin,login.newPwd);
+
 /*导出*/
 module.exports = router;

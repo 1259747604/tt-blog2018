@@ -4,7 +4,7 @@ const routes = [
         meta:{
             title: '404'
         },
-        component: (resolve) => require(['../components/404/404'],resolve),
+        component: (resolve) => require(['../Pages/404'],resolve),
     },
     {
         path: '/',
@@ -12,7 +12,7 @@ const routes = [
             title: 'TT首页'
         },
         name: 'home',
-        component: (resolve) => require(['../components/Pages/Home'],resolve),
+        component: (resolve) => require(['../Pages/Home'],resolve),
     },
     {
         path: '/login',
@@ -20,7 +20,7 @@ const routes = [
             title: '登录页'
         },
         name: 'login',
-        component: (resolve)=>require(['../components/Pages/loginPage'],resolve),
+        component: (resolve)=>require(['../Pages/loginPage'],resolve),
     },
     {
         path: '/personal',
@@ -28,7 +28,7 @@ const routes = [
             title: '个人中心'
         },
         name: 'personal',
-        component: (resolve)=>require(['../components/Pages/personal'],resolve),
+        component: (resolve)=>require(['../Pages/personal'],resolve),
         redirect: {name: 'analyses'},
         children:[
             {

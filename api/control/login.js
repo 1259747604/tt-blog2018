@@ -78,3 +78,46 @@ exports.signOut = async (ctx) => {
         status : 1
     }
 };
+
+/*比较密码*/
+exports.initPwd = async (ctx) => {
+    const _id = ctx.session.uid;
+    const pwd = ctx.request.body.pwd;
+
+    const status = await User.findOne({_id})
+        .then(data => {
+            return data.password;
+        })
+        .then(data => {
+            if(data === encrypt(pwd)){
+                return 1
+            }
+            return 0
+        })
+        .catch(err => {
+            return 0
+        });
+
+    ctx.body = {
+        status
+    }
+};
+
+/*存入新密码*/
+exports.newPwd = async (ctx) => {
+    /*获取新密码*/
+    const password = ctx.request.body.v;
+
+    const _id = ctx.session.uid;
+    await User.updateOne({_id},{$set:{password:encrypt(password)}})
+        .then(data => {
+            ctx.body = {
+                status: 1
+            }
+        })
+        .catch(err => {
+            ctx.body = {
+                status: 0
+            }
+        })
+};

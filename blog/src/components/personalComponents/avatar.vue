@@ -1,5 +1,5 @@
 <template>
-    <h1>更新头像</h1>
+    <h1>暂时好像不需要这玩意 先空着以后再说</h1>
 </template>
 
 <script>

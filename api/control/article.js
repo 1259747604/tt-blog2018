@@ -174,8 +174,7 @@ exports.getArticle = async (ctx) => {
         .then(data => data);
 
     /*获取文章列表*/
-    const id = ctx.session.uid;
-    const data = await Article.find({author:id})
+    const data = await Article.find()
         .populate('type','_id type')
         .sort('-created')
         .limit(10)

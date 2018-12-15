@@ -1,14 +1,18 @@
 <template>
     <div id="app">
-        <Row>
-            <Col span="20">
-                <h-nav></h-nav>
-            </Col>
-            <Col span="4">
-                <l-btn v-if="showBtn"></l-btn>
-                <per-btn v-else></per-btn>
-            </Col>
-        </Row>
+        <div class="affix">
+            <Affix>
+                <Row>
+                    <Col span="20">
+                    <h-nav></h-nav>
+                    </Col>
+                    <Col span="4">
+                    <l-btn v-if="showBtn"></l-btn>
+                    <per-btn v-else></per-btn>
+                    </Col>
+                </Row>
+            </Affix>
+        </div>
         <router-view/>
     </div>
 </template>
@@ -30,23 +34,28 @@
         },
         created(){
             /*获取session*/
-            this.$axios.post('/loginstatus')
-                .then(data => {
-                    /*获取状态*/
-                    const status = data.data.keepStatus;
+            this.getsession();
+        },
+        methods:{
+            getsession(){
+                this.$axios.post('/loginstatus')
+                    .then(data => {
+                        /*获取状态*/
+                        const status = data.data.keepStatus;
 
-                    if(status === 200){
-                        const session = data.data.session;
-                        this.$store.commit('getSession',session);
-                        this.$store.commit('changeSessionIsNew',false);
-                    }
-                    else{
-                        this.$store.commit('changeSessionIsNew',true);
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                })
+                        if(status === 200){
+                            const session = data.data.session;
+                            this.$store.commit('getSession',session);
+                            this.$store.commit('changeSessionIsNew',false);
+                        }
+                        else{
+                            this.$store.commit('changeSessionIsNew',true);
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
         },
         computed:{
             showBtn(){
@@ -57,9 +66,15 @@
 </script>
 
 <style>
+    body{
+        overflow: hidden;
+    }
     #app {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+    }
+    .affix > div > div:nth-child(1){
+        z-index: 1000;
     }
 </style>

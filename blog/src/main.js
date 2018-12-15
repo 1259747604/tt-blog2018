@@ -9,6 +9,8 @@ import 'iview/dist/styles/iview.css';
 import axios from 'axios';
 import cookie from 'js-cookie';
 import echarts from 'echarts';
+import jquery from 'jquery';
+import jqMouseWheel from 'jquery-mousewheel';
 
 Vue.config.productionTip = false;
 
@@ -33,6 +35,10 @@ iView.LoadingBar.config({
     failedColor: '#f0ad4e',
     height: 5
 });
+
+/*jquery*/
+Vue.prototype.$ = jquery;
+
 
 /*页面进度条*/
 router.beforeEach((to, from, next) => {

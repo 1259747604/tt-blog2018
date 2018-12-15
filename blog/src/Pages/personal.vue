@@ -3,7 +3,7 @@
         <div class="personal" v-if="roleAndStatus">
             <Layout>
                 <Sider hide-trigger breakpoint="md">
-                    <sidel-nav></sidel-nav>
+                    <sidel-nav ref="silder"></sidel-nav>
                 </Sider>
                 <Layout>
                     <Content>

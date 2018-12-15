@@ -39,8 +39,11 @@
 
 <style scoped>
     .perBtn{
+        position: relative;
+        z-index: 1000;
         height: 60px;
         line-height: 60px;
         border-bottom: 1px solid #dcdee2;
+        background: #ffffff;
     }
 </style>

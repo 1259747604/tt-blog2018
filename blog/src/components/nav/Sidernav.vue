@@ -66,6 +66,6 @@
 
 <style scoped>
     .sidernav{
-        height: 870px;
+        height: 1870px;
     }
 </style>

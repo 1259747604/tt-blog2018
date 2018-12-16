@@ -1,7 +1,8 @@
 const Router = require('koa-router');
 const login = require('../control/login');//登录逻辑
-const article = require('../control/article');//文章逻辑
+const article = require('../control/article');//文章数据
 const upload = require('../util/upload');
+const home = require('../control/home');//主页数据
 
 /*实例化Router*/
 const router = new Router;
@@ -29,7 +30,8 @@ router.put('/newType',login.keepLogin,article.newType);
 router.delete('/arType',login.keepLogin,article.delType);
 
 /*文章图片上传*/
-router.post('/upload/artImg',login.keepLogin,upload.uploadArtImg,article.uploadImg);
+// router.post('/upload/artImg',login.keepLogin,upload.uploadArtImg,article.uploadImg);
+router.post('/upload/artImg',upload.uploadArtImg,article.uploadImg);
 
 /*发表文章*/
 router.put('/articlePublish',login.keepLogin,article.artPublish);
@@ -63,6 +65,9 @@ router.post('/initPwd',login.keepLogin,login.initPwd);
 
 /*保存新密码*/
 router.post('/newPwd',login.keepLogin,login.newPwd);
+
+/*首页请求最新的一条数据*/
+router.get('/newOne',home.newOne);
 
 /*导出*/
 module.exports = router;

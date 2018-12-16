@@ -11,8 +11,14 @@
         components:{
             screenWheel
         },
+        mounted(){
+            document.body.style.overflow = 'hidden';
+        }
     }
 </script>
 
 <style scoped>
+/*    body{
+        overflow: hidden!important;
+    }*/
 </style>

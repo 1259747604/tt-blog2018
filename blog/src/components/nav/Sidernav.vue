@@ -42,7 +42,7 @@
             return {
                 theme: 'dark',
                 name:[{n:'analyses',key:'1-1'},{n:'artManage',key:'1-2'}
-                ,{n:'article',key:'1-3'},{n:'artType',key:'1-4'},{n:'avatar',key:'2'},{n:'pwd',key:'3'}],
+                    ,{n:'article',key:'1-3'},{n:'artType',key:'1-4'},{n:'avatar',key:'2'},{n:'pwd',key:'3'}],
                 active:'1-1'
             }
         },
@@ -53,7 +53,6 @@
             select(){
                 const path = location.pathname;
                 const len = this.name.length;
-
                 for(let i = 0; i < len; i++){
                     if(new RegExp(this.name[i].n).test(path)){
                         this.active = this.name[i].key;
@@ -66,6 +65,6 @@
 
 <style scoped>
     .sidernav{
-        height: 1870px;
+        height: 875px;
     }
 </style>

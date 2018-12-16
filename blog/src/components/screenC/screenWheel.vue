@@ -5,8 +5,12 @@
                 <h1>{{$store.state.session}}</h1>
                 <v-njzy></v-njzy>
             </li>
-            <li style="font-size: 100px">2</li>
-            <li style="font-size: 100px">3</li>
+            <li>
+                <n-one></n-one>
+            </li>
+            <li>
+                <d-zj></d-zj>
+            </li>
             <li style="font-size: 100px">4</li>
         </ul>
     </div>
@@ -14,10 +18,14 @@
 
 <script>
     import njzy from '../interesting/njzy';
+    import dZj from '../interesting/Typewriter';
+    import nOne from '../article/newOne';
     export default {
         name: "",
         components:{
-            vNjzy:njzy
+            vNjzy:njzy,
+            dZj,
+            nOne
         },
         mounted(){
             this.setHeight();

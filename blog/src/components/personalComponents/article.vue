@@ -161,6 +161,11 @@
                         _this.$Loading.finish();
                         // console.log(result);
                     },
+                    error: function (xhr, editor) {
+                        // 图片上传出错时触发
+                        // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象
+                        _this.$Loading.finish();
+                    },
                 };
                 this.editor.create();
             },

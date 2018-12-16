@@ -164,11 +164,11 @@
             uploadConfig(){
                 const _this = this;
                 this.editor = new Editor("#toolbar","#text");
+                this.editor.customConfig.withCredentials = true;
                 this.editor.customConfig.zIndex = 0;//这个富文本作者思想出问题了z-index设个10000也是醉了
                 this.editor.customConfig.uploadImgServer = this.uploadUrl();
                 this.editor.customConfig.uploadImgMaxSize = 10 * 1024 * 1024;
                 this.editor.customConfig.uploadImgMaxLength = 1;
-                this.editor.customConfig.withCredentials = true;
                 this.editor.customConfig.customAlert = function (info) {
                     // info 是需要提示的内容
                     _this.$Message.error({
@@ -182,6 +182,11 @@
                     success: function (xhr, editor, result) {
                         _this.$Loading.finish();
                         // console.log(result);
+                    },
+                    error: function (xhr, editor) {
+                        // 图片上传出错时触发
+                        // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象
+                        _this.$Loading.finish();
                     },
                 };
                 this.editor.create();

@@ -3,7 +3,7 @@
         <div class="personal" v-if="roleAndStatus">
             <Layout>
                 <Sider hide-trigger breakpoint="md">
-                    <sidel-nav ref="silder"></sidel-nav>
+                    <sider-nav ref="silder"></sider-nav>
                 </Sider>
                 <Layout>
                     <Content>
@@ -25,7 +25,7 @@
 
 <script>
     /*侧边导航*/
-    import sidelNav from '../components/nav/Sidernav';
+    import siderNav from '../components/nav/Sidernav';
 
     export default {
         name: "personal",
@@ -35,10 +35,13 @@
             }
         },
         components:{
-            sidelNav
+            siderNav
         },
         created(){
             this.getStatus();
+        },
+        mounted(){
+            document.body.style.overflow = '';
         },
         methods:{
             getStatus(){

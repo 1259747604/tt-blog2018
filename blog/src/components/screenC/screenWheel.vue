@@ -34,6 +34,9 @@
                 this.setHeight();
             }
         },
+        beforeDestroy(){
+            window.onresize = null;
+        },
         methods:{
             setHeight(){
                 const len = this.$refs.list.children.length;

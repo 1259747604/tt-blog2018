@@ -99,6 +99,7 @@
     }
     ul > li{
         width: 100%;
+        overflow: hidden;
     }
     ul > li {
         position: relative;

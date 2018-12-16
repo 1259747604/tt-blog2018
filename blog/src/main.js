@@ -10,7 +10,10 @@ import axios from 'axios';
 import cookie from 'js-cookie';
 import echarts from 'echarts';
 import jquery from 'jquery';
-import jqMouseWheel from 'jquery-mousewheel';
+import 'jquery-mousewheel';
+import VueHighlightJS from 'vue-highlightjs';
+import 'highlight.js/styles/Atom-One-Dark-Reasonable.css'
+// import 'babel-polyfill'
 
 Vue.config.productionTip = false;
 
@@ -38,6 +41,9 @@ iView.LoadingBar.config({
 
 /*jquery*/
 Vue.prototype.$ = jquery;
+
+/*代码高亮*/
+Vue.use(VueHighlightJS);
 
 
 /*页面进度条*/

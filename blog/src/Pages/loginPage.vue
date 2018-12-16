@@ -44,7 +44,7 @@
                 }
                 /*都不为空提交数据*/
                 this.$axios.post(`/login`,{
-                    username:this.username,
+                    username:this.username.trim(),
                     password:this.password
                 })
                     .then(data => {

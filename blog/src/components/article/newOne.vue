@@ -6,7 +6,9 @@
                     <h1>{{title}}</h1>
                     <span>{{type}}</span>
                 </div>
-                <p v-html="content" class="content" v-highlightjs></p>
+                <div class="content">
+                    <p v-html="content"  v-highlightjs></p>
+                </div>
             </Card>
         </div>
     </div>
@@ -19,7 +21,8 @@
             return{
                 title:'暂无数据',
                 content:'',
-                type:''
+                type:'',
+                initDis: 0,//初始距离
             }
         },
         created(){
@@ -38,11 +41,11 @@
         },
         mounted(){
             this.scrollC();
+            this.mouseM();
         },
         methods:{
             //鼠标进入可滚动文章
             scrollC(){
-                let x = 0;
                 this.$('.cardNEW').eq(0).hover((e)=>{
                     let len = this.$('.content').outerHeight();
                     let oHeight = this.$('.cardNEW').eq(0).outerHeight() - 58 - 30;//包裹内容的高度
@@ -50,28 +53,44 @@
                     this.$('.cardNEW').on('mousewheel',(e,d)=>{
                         e.cancelBubble = true;
                         if(d < 0){
-                            if(x >= len - oHeight){
-                                x = len - oHeight;
-                            }
-                            else{
-                                x += 90;
-                            }
+                            this.initDis -= 90;
+                            this.initDis = Math.max(this.initDis,-len + oHeight)
                         }
                         else{
-                            if(x <= 0){
-                                x = 0;
-                            }
-                            else{
-                                x -= 90;
-                            }
+                            this.initDis += 90;
+                            this.initDis = Math.min(this.initDis,0);
                         }
-                        this.$('.content').eq(0).css({'transform':`translate3d(0,${-x}px,0)`});
+                        this.$('.content').eq(0).css({'transform':`translate3d(0,${this.initDis}px,0)`});
                         return false;
                     })
                 },()=>{
                     this.$('.cardNEW').off('mousewheel');
                 });
             },
+            //鼠标拖拽
+            mouseM(){
+                document.ondragstart = ()=>false;
+                this.$('.content').eq(0).on('mousedown',(e)=>{
+                    let initHei = this.$('.content').outerHeight();//初始高度
+                    let oHeight = this.$('.cardNEW').eq(0).outerHeight() - 58 - 30;//包裹内容的高度
+                    let initY = e.clientY;
+
+                    this.$('.content').eq(0).on('mousemove',(e) => {
+                        let preY = e.clientY;
+                        let differ = (preY - initY)*1.5;//差值 需要滚动的距离
+
+                        initY = preY;
+                        this.initDis += differ;
+                        this.initDis = Math.min(0,this.initDis);
+                        this.initDis = Math.max(-initHei+oHeight,this.initDis);
+                        this.$('.content').eq(0).css({'transform':`translate3d(0,${this.initDis}px,0)`});
+                    });
+                });
+                document.onmouseup = ()=>{
+                    this.$('.content').eq(0).off('mousemove');
+
+                }
+            }
         }
     }
 </script>
@@ -82,6 +101,7 @@
         margin:auto;
         width: 1200px;
         transform: translate3d(0,50px,0);
+        user-select: none;
     }
     .cardNEW > div >>> div.ivu-card-head{
         padding: 0;
@@ -113,7 +133,6 @@
     .content{
         position: relative;
         transition: 500ms;
-        /*z-index: -1;*/
     }
     .content >>> pre{
         /*width: 800px;*/

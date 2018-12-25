@@ -13,7 +13,7 @@ const store = new Vuex.Store({
         },
         changeSessionIsNew(state,s){
             state.sessionIsNew = s;
-        }
+        },
     }
 });
 

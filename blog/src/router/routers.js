@@ -91,6 +91,14 @@ const routes = [
                 component: (resolve) => require(['../components/personalComponents/artType'],resolve),
             },
             {
+                path:'musicManage',
+                meta:{
+                    title: '个人中心-更换音乐'
+                },
+                name: 'musicManage',
+                component: (resolve) => require(['../components/personalComponents/musicManage'],resolve),
+            },
+            {
                 path:'avatar',
                 meta:{
                     title: '个人中心-头像'

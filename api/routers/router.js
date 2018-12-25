@@ -3,6 +3,7 @@ const login = require('../control/login');//登录逻辑
 const article = require('../control/article');//文章数据
 const upload = require('../util/upload');
 const home = require('../control/home');//主页数据
+const music = require('../control/music');
 
 /*实例化Router*/
 const router = new Router;
@@ -68,6 +69,24 @@ router.post('/newPwd',login.keepLogin,login.newPwd);
 
 /*首页请求最新的一条数据*/
 router.get('/newOne',home.newOne);
+
+/*上传音乐*/
+router.post('/musicUp',login.keepLogin,upload.uploadMusic,music.musicUpload);
+
+/*上传歌词*/
+router.post('/lrcUp',login.keepLogin,upload.uploadLrc,music.lrcUpload);
+
+/*得到歌曲列表*/
+router.post('/musicList',login.keepLogin,music.musicList);
+
+/*删除音乐*/
+router.delete('/music',login.keepLogin,music.delMusic);
+
+/*更新首页音乐*/
+router.post('/musicSelectOne',login.keepLogin,music.musicSelectOne);
+
+/*获取选中的音乐*/
+router.get('/musicName',login.keepLogin,music.musicName);
 
 /*导出*/
 module.exports = router;

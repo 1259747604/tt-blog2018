@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import one from '../../assets/one';
+    import njzy from '../../assets/njzy';
     export default {
         name: "",
         mounted(){
@@ -28,7 +28,7 @@
         },
         methods:{
             one(){
-                one();
+                njzy();
             }
         }
     }

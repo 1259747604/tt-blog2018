@@ -71,6 +71,12 @@
             //得到选中的音乐
             this.getName();
         },
+        watch:{
+            selectV(v,o){
+                //如果为空 则不允许取消
+                this.forbidClose(v,o);
+            }
+        },
         methods: {
             getData(){
                 this.$axios({
@@ -158,6 +164,16 @@
                             return this.$store.commit('changeSessionIsNew',true);
                         }
                     })
+            },
+            forbidClose(v,o){
+                if(v === ''){
+                    this.$Message.warning({
+                        content:'不允许取消',
+                    });
+                    this.$nextTick(()=>{
+                        this.selectV = o;
+                    })
+                }
             }
         }
     }

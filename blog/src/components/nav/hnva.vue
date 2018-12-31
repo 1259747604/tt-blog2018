@@ -5,7 +5,7 @@
                 <Icon type="md-home" size="24"/>
                 首页
             </MenuItem>
-            <MenuItem name="2">
+            <MenuItem name="2" :to="{name:'articleList'}">
                 <Icon type="md-bookmarks" size="24"/>
                 文章
             </MenuItem>

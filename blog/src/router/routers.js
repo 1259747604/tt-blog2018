@@ -15,6 +15,14 @@ const routes = [
         component: (resolve) => require(['../Pages/Home'],resolve),
     },
     {
+        path: '/articleList',
+        meta:{
+            title: 'TT文章列表'
+        },
+        name: 'articleList',
+        component: (resolve) => require(['../components/article/articleList'],resolve),
+    },
+    {
         path: '/login',
         meta:{
             title: '登录页'

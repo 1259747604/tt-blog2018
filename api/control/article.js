@@ -147,6 +147,7 @@ exports.artPublish = async (ctx) => {
     /*保存*/
     await new Article({
         title: data.title,
+        synopsis: data.synopsis,
         author: ctx.session.uid,
         content: data.content,
         type: data.id,
@@ -254,6 +255,7 @@ exports.updateArticle = async (ctx) => {
     const _id = data.id;//文章id
     const type = data.typeId;//文章类型
     const title = data.title;//文章标题
+    const synopsis = data.synopsis;//文章简介
     const content = data.content;//文章内容
     const initTypeId = data.initTypeId;//更新前文章id;
 
@@ -268,7 +270,7 @@ exports.updateArticle = async (ctx) => {
                 if(err) return console.log(err);
             });
     }
-    await Article.updateOne({_id},{$set:{type,title,content}})
+    await Article.updateOne({_id},{$set:{type,title,content,synopsis}})
         .then(data =>{
             ctx.body = {
                 status: 1

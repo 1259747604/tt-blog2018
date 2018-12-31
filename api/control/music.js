@@ -176,3 +176,52 @@ exports.musicName = async (ctx) => {
         data
     }
 };
+
+/*请求首页音乐*/
+exports.indexMusic = async (ctx) => {
+    const _id = ctx.params.id;
+
+    //获取名称
+    const data = await Music.findOne({_id})
+        .then(data => data)
+        .catch(err => err);
+
+    const {pathName,pathLrc,lrcSource} = data;
+
+    //读取数据
+    let lrc = await new Promise((resolve, reject) => {
+        fs.readFile(join(`./static/lrc/${pathLrc}`),(err,data)=>{
+            if(err){
+                reject(err);
+            }
+            else{
+                if(lrcSource === 'qq'){
+                    let result = data.toString('utf8');
+                    resolve(result);
+                }
+                else if(lrcSource === '网易'){
+                    const json = JSON.parse(data.toString('utf8'));
+                    const lrc = json.lrc.lyric;
+                    resolve(lrc);
+                }
+            }
+        })
+    })
+        .then(data => data);
+    let music = await new Promise((resolve, reject) => {
+        fs.readFile(join(`./static/music/${pathName}`),(err,data)=>{
+            if(err){
+                reject(err);
+            }
+            else{
+                resolve(data);
+            }
+        })
+    }).then(data => data);
+
+    ctx.body = {
+        lrc,
+        music,
+        lrcSource
+    };
+};

@@ -87,6 +87,19 @@ router.post('/musicSelectOne',login.keepLogin,music.musicSelectOne);
 
 /*获取选中的音乐*/
 router.get('/musicName',login.keepLogin,music.musicName);
+router.get('/indexMusicName',music.musicName);
+
+/*请求首页音乐*/
+router.get('/indexMusic/:id',music.indexMusic);
+
+/*请求文章列表*/
+router.get('/articleList/:pageNum',home.artList);
+
+/*请求文章类型*/
+router.get('/artTypeList',home.artType);
+
+/*按类型请求文章数据*/
+router.get('/typeForArticleList/:id/:index',home.artListofType);
 
 /*导出*/
 module.exports = router;

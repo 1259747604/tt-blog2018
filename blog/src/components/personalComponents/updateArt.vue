@@ -12,6 +12,10 @@
             <span>文章标题:</span>
             <Input v-model="title" size="large" placeholder="文章标题" style="width:400px"/>
         </div>
+        <div class="artSynopsis">
+            <span>文章简介:</span>
+            <Input v-model="synopsis" size="large" placeholder="文章简介" style="width:800px"/>
+        </div>
         <!--富文本-->
         <div class="editor">
             <Divider orientation="left">文章编辑</Divider>
@@ -34,6 +38,7 @@
                 artType: [],
                 selectV:'',
                 title:'',
+                synopsis:'',//文章梗概
                 editor:'',
                 initTypeId:''
             }
@@ -68,6 +73,7 @@
                             const art = data.data.data[0];
                             this.selectV = art.type.type;
                             this.title = art.title;
+                            this.synopsis = art.synopsis;
                             this.initTypeId = art.type._id;
                             this.editor.txt.html(art.content);
                         }
@@ -128,6 +134,7 @@
                 /*获取文章内容*/
                 const selectV = this.selectV;
                 const title = this.title;
+                const synopsis = this.synopsis;
                 const content = this.editor.txt.html();
 
                 if(!selectV){
@@ -154,6 +161,7 @@
                     title,
                     content,
                     typeId,
+                    synopsis,
                     initTypeId:this.initTypeId,
                     id:this.$route.params.id
                 };
@@ -202,14 +210,14 @@
     .type{
         margin-bottom: 30px;
     }
-    .type span,.artTitle span{
+    .type span,.artTitle span,.artSynopsis span{
         display: inline-block;
         height: inherit;
         font-size: 20px;
         font-family: 华文楷体;
         vertical-align: middle;
     }
-    .artTitle{
+    .artTitle,.artSynopsis{
         margin-bottom: 30px;
     }
     .btn{

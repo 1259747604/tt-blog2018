@@ -12,6 +12,11 @@
             <span>文章标题:</span>
             <Input v-model="title" size="large" placeholder="文章标题" style="width:400px"/>
         </div>
+        <!--文章梗概-->
+        <div class="artSynopsis">
+            <span>文章简介:</span>
+            <Input v-model="synopsis" size="large" placeholder="文章简介" style="width:800px"/>
+        </div>
         <!--富文本-->
         <div class="editor">
             <Divider orientation="left">文章编辑</Divider>
@@ -34,6 +39,7 @@
                 artType: [],
                 selectV:'',
                 title:'',
+                synopsis:'',//文章梗概
                 editor:''
             }
         },
@@ -80,6 +86,7 @@
                                     onClose(){
                                         _this.selectV = '';
                                         _this.title = '';
+                                        _this.synopsis = '';
                                         _this.editor.txt.clear();
                                     }
                                 })
@@ -108,6 +115,7 @@
                 /*获取文章内容*/
                 const selectV = this.selectV;
                 const title = this.title;
+                const synopsis = this.synopsis;
                 const content = this.editor.txt.html();
 
                 if(!selectV){
@@ -132,6 +140,7 @@
                 return {
                     selectV,
                     title,
+                    synopsis,
                     content,
                     id
                 };
@@ -180,14 +189,14 @@
     .type{
         margin-bottom: 30px;
     }
-    .type span,.artTitle span{
+    .type span,.artTitle span,.artSynopsis span{
         display: inline-block;
         height: inherit;
         font-size: 20px;
         font-family: 华文楷体;
         vertical-align: middle;
     }
-    .artTitle{
+    .artTitle,.artSynopsis{
         margin-bottom: 30px;
     }
     .btn{

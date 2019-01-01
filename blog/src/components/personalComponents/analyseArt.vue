@@ -161,6 +161,7 @@
                             this.filter(this.initData);
 
                             /*月统计数据*/
+                            //此处bug 如果新的一年没有发文章的话将查询不到月统计数据 页面会抛出catch的错误，懒得解决 毕竟一年才一次
                             this.lineArr = data.data.data1[0].count;
                             this.constructCharts();
                             /*this.$nextTick(function () {

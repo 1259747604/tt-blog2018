@@ -9,7 +9,7 @@
                 <n-one></n-one>
             </li>
             <li>
-                <d-zj></d-zj>
+                <d-zj v-if="showMusic"></d-zj>
             </li>
             <li style="font-size: 100px">4</li>
         </ul>
@@ -21,7 +21,12 @@
     import dZj from '../interesting/Typewriter';
     import nOne from '../article/newOne';
     export default {
-        name: "",
+        data(){
+            return{
+                showMusic: false,
+                scrollTop:0
+            }
+        },
         components:{
             vNjzy:njzy,
             dZj,
@@ -30,12 +35,28 @@
         mounted(){
             this.setHeight();
             this.scrollUl();
+            this.getScrollTop();
             window.onresize = ()=>{
                 this.setHeight();
             }
         },
         beforeDestroy(){
             window.onresize = null;
+        },
+        watch:{
+            scrollTop(v){
+                if(v <= (-2*window.innerHeight + 180)){
+                    this.showMusic = true
+                }
+            },
+            showMusic(v){
+                if(v){
+                    clearInterval(this.timer1);
+                }
+            }
+        },
+        destroyed(){
+            clearInterval(this.timer1);
         },
         methods:{
             setHeight(){
@@ -88,6 +109,11 @@
                     const eName = document.onmousewheel === null?'mousewheel':'DOMMouseScroll';
                     document.addEventListener?obj.addEventListener(eName,wheel,false):obj.attachEvent("onmousewheel",wheel);
                 }*/
+            },
+            getScrollTop(){
+                this.timer1 = setInterval(()=>{
+                    this.scrollTop = this.$('#list').offset().top;
+                },1000)
             }
         }
     }

@@ -5,6 +5,7 @@ const koaBody = require('koa-body');
 const static = require('koa-static');//静态资源
 const {join} = require('path');
 const KoaSession = require('koa-session');//session
+const chat = require('./control/chat');//聊天
 
 /*操作数据库*/
 const {db} = require('./Schema/config');
@@ -45,8 +46,14 @@ app.use(router.routes())
     .use(router.allowedMethods());
 
 /*监听端口*/
-app.listen(3000,()=>{
+const server = app.listen(3000,()=>{
     console.log(`服务监听在3000端口`);
+});
+
+/*聊天*/
+process.nextTick(()=>{
+    const onechat = new chat.newChat();
+    onechat.chat();
 });
 
 /*发表账号*/
@@ -73,3 +80,4 @@ app.listen(3000,()=>{
         })
         .catch(err => console.log(err));
 }
+module.exports = server;

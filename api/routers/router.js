@@ -4,6 +4,7 @@ const article = require('../control/article');//文章数据
 const upload = require('../util/upload');
 const home = require('../control/home');//主页数据
 const music = require('../control/music');
+const chat = require('../control/chat');//聊天相关
 
 /*实例化Router*/
 const router = new Router;
@@ -100,6 +101,12 @@ router.get('/artTypeList',home.artType);
 
 /*按类型请求文章数据*/
 router.get('/typeForArticleList/:id/:index',home.artListofType);
+
+/*聊天名字*/
+router.post('/chatName',chat.chatName);
+
+/*聊天名字session*/
+router.get('/sessionChatName',chat.sessionChatName);
 
 /*导出*/
 module.exports = router;

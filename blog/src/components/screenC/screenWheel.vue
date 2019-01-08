@@ -11,7 +11,9 @@
             <li>
                 <d-zj v-if="showMusic"></d-zj>
             </li>
-            <li style="font-size: 100px">4</li>
+            <li>
+                <v-chat></v-chat>
+            </li>
         </ul>
     </div>
 </template>
@@ -20,6 +22,7 @@
     import njzy from '../interesting/njzy';
     import dZj from '../interesting/Typewriter';
     import nOne from '../article/newOne';
+    import vChat from '../interesting/chat';
     export default {
         data(){
             return{
@@ -30,7 +33,8 @@
         components:{
             vNjzy:njzy,
             dZj,
-            nOne
+            nOne,
+            vChat
         },
         mounted(){
             this.setHeight();

@@ -19,6 +19,7 @@
 </template>
 
 <script>
+    /*存在bug */
     import njzy from '../interesting/njzy';
     import dZj from '../interesting/Typewriter';
     import nOne from '../article/newOne';
@@ -40,6 +41,11 @@
             this.setHeight();
             this.scrollUl();
             this.getScrollTop();
+
+            this.$nextTick(() => {
+                //回到首页定位
+                this.setOffset();
+            });
             window.onresize = ()=>{
                 this.setHeight();
             }
@@ -69,8 +75,8 @@
                     this.$refs.list.children[i].style.height = `${window.innerHeight -60}px`;
                 }
             },
-            scrollUl(){
-                let index = 0;
+            scrollUl(i){
+                let index = i || 0;
                 let lastTime = 0;
                 let len = this.$refs.list.children.length;
 
@@ -118,6 +124,17 @@
                 this.timer1 = setInterval(()=>{
                     this.scrollTop = this.$('#list').offset().top;
                 },1000)
+            },
+            getOffset(){
+                //路由改变时得到首页滚动量
+                this.$store.commit('changeScroll',this.$(this.$refs.list).offset());
+            },
+            setOffset(){
+                /*存在bug 当页面高度变化例如打开f12 暂不予解决 */
+                const height = window.innerHeight - 60;
+                this.$("#list").css({'transform': `translate3d(0,${this.$parent.offsetTop - 60}px,0)`});
+                const index = 0 - Number((this.$parent.offsetTop - 60)/height);//获取当前是第几屏
+                this.scrollUl(index);
             }
         }
     }

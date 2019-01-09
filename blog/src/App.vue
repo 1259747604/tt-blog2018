@@ -59,7 +59,11 @@
         },
         computed:{
             showBtn(){
-                return this.$store.state.sessionIsNew;
+                if(!this.$store.state.sessionIsNew && this.$store.state.session.role === '666'){
+                    return false;
+                }
+                return true;
+                // return this.$store.state.sessionIsNew;
             },
         }
     }

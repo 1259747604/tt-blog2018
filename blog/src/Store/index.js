@@ -6,6 +6,7 @@ const store = new Vuex.Store({
     state: {
         sessionIsNew: true,
         session:{},
+        scroll:{top:60}//首页滚动
     },
     mutations: {
         getSession(state,s){
@@ -14,6 +15,9 @@ const store = new Vuex.Store({
         changeSessionIsNew(state,s){
             state.sessionIsNew = s;
         },
+        changeScroll(state,s){
+            state.scroll = s;
+        }
     }
 });
 

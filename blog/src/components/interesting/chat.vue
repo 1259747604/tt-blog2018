@@ -8,24 +8,36 @@
         </div>
         <div class="chat" v-if="show">
             <ul id="messages"></ul>
-            <input id="m" autocomplete="off" /><button id="send">Send</button>
+            <textarea  id="m" cols="80" rows="1"></textarea>
+            <button id="send">
+                <Icon type="ios-paper-plane-outline" />
+                <span>Send</span>
+            </button>
         </div>
     </div>
 </template>
 
 <script>
+    /*存在bug 管理员和聊天session会冲突 暂不予解决*/
     import io from 'socket.io-client';
     export default {
         data() {
             return {
                 show: false,
                 name: '',
-                session: ''
+                session: '',
+                socket: ''
             }
         },
-        mounted(){
+        created(){
             this.getSession();
 
+        },
+        destroyed(){
+            /*销毁时关闭*/
+            if(this.socket.close){
+                this.socket.close();
+            }
         },
         methods:{
             getSession(){
@@ -74,32 +86,123 @@
 
                 return status;
             },
-            handshake(){
-                const socket = io('http://localhost:3000',{
-                    path:'/chat',
+            handshake: function () {
+                this.socket = io('http://localhost:3000', {
+                    path: '/chat',
                 });
+                this.send();
+                this.receive();
+            },
+            send(){
                 /*发送数据*/
                 this.$('#send').click(async () => {
                     const status = await this.isStatus();
                     /*session没过期可发送*/
-                    if(status){
-                        const data = {
-                            msg: this.$('#m').val(),
-                            name: this.session
-                        };
-                        socket.emit('chat message', data);
-                        this.$('#m').val('');
+                    if (status) {
+                        if (this.$('#m').val().trim() !== "") {
+                            const data = {
+                                msg: this.$('#m').val(),
+                                name: this.session
+                            };
+                            this.socket.emit('chat message', data);
+                            this.$('#m').val('');
+                        }
                     }
-                    else{
+                    else {
                         console.log('过期')
                         /*过期后续操作暂不完成*/
                     }
                     return false;
                 });
+            },
+            cssOne(name,msg){
+                /*聊天样式*/
+                const oLi = document.createElement('li');
+                const oP = document.createElement('p');
+                const oSpan = document.createElement('span');
+                const oI = document.createElement('i');
+                oP.innerHTML = `${msg.msg}`;
+                oSpan.innerHTML = `${name}`;
+                this.$(oP).css({
+                    position: 'relative',
+                    display:'inline-block',
+                    marginLeft: '5px',
+                    padding: '3px 15px',
+                    maxWidth:'300px',
+                    background:'rgba(189,202,212,0.5)',
+                    borderRadius: '5px',
+                    verticalAlign: 'top',
+                    fontSize: '15px',
+                    wordBreak: 'normal',
+                    wordWrap: 'break-word',
+                    whiteSpace: 'pre-warp',
+                });
+                this.$(oI).css({
+                    position: 'absolute',
+                    top:'2px',
+                    left: '-9px',
+                    border: '5px solid transparent',
+                    borderRight: '5px solid rgba(189,202,212,0.5)',
+                });
+                this.$(oSpan).css({fontSize:'16px'});
+                this.$(oLi).css({padding:'15px 0 0 15px'});
+                oLi.appendChild(oSpan);
+                oP.appendChild(oI);
+                oLi.appendChild(oP);
+                return oLi;
+            },
+            cssTwo(name,msg){
+                /*聊天样式*/
+                const oLi = document.createElement('li');
+                const oP = document.createElement('p');
+                const oSpan = document.createElement('span');
+                const oI = document.createElement('i');
+                oP.innerHTML = `${msg.msg}`;
+                oSpan.innerHTML = `${name}`;
+                this.$(oP).css({
+                    position: 'relative',
+                    display:'inline-block',
+                    marginRight: '5px',
+                    padding: '3px 15px',
+                    maxWidth:'300px',
+                    background:'#49afcf',
+                    borderRadius: '5px',
+                    verticalAlign: 'top',
+                    fontSize: '15px',
+                    wordBreak: 'normal',
+                    wordWrap: 'break-word',
+                    whiteSpace: 'pre-warp',
+                    textAlign: 'left'
+                });
+                this.$(oI).css({
+                    position: 'absolute',
+                    top:'2px',
+                    right: '-9px',
+                    border: '5px solid transparent',
+                    borderLeft: '5px solid #49afcf',
+                });
+                this.$(oSpan).css({fontSize:'16px'});
+                this.$(oLi).css({padding:'15px 15px 0 15px',
+                    textAlign: 'right'
+                });
+                oP.appendChild(oI);
+                oLi.appendChild(oP);
+                oLi.appendChild(oSpan);
+                return oLi;
+            },
+            receive(){
                 /*接收广播*/
-                socket.on('chat message', (msg) => {
+                this.socket.on('chat message', (msg) => {
                     const name = msg.name === this.session ? '我' : msg.name;
-                    this.$('#messages').append(this.$('<li>').text(`${name}:${msg.msg}`));
+                    let oLi;
+                    if(name === '我'){
+                        oLi = this.cssTwo(name,msg);
+                    }
+                    else{
+                        oLi = this.cssOne(name,msg);
+                    }
+
+                    this.$('#messages')[0].appendChild(oLi);
                 });
             }
         }
@@ -112,9 +215,6 @@
         top: 46%;
         left: 50%;
         transform: translate3d(-50%,-50%,0);
-        /*width: 800px;*/
-        /*height: 500px;*/
-        /*border: 1px solid;*/
     }
     .inpName p{
         margin-bottom: 70px;
@@ -141,5 +241,41 @@
     }
     .inpName button >>> span{
         vertical-align: initial;
+    }
+    textarea{
+        margin-left: 5px;
+        height: 40px;
+        resize: none;
+        vertical-align: middle;
+        font-size: 18px;
+        border: none;
+        outline: none;
+    }
+    #send{
+        margin-left: 15px;
+        width: 120px;
+        height: 40px;
+        border: 1px solid #49afcf;
+        background: none;
+        outline: none;
+        font-size: 18px;
+        transform: translateY(5px);
+        transition: 500ms;
+    }
+    #send:hover{
+        box-shadow: 0 0 30px #49afcf inset;
+    }
+    .chat{
+        width: 900px;
+        height: 600px;
+        border: 1px solid #dbe8f4;
+    }
+    .chat ul{
+        padding-bottom: 10px;
+        width: 100%;
+        height: 550px;
+        border-bottom: 1px solid #dbe8f4;
+        list-style: none;
+        /*overflow-y: auto;*/
     }
 </style>

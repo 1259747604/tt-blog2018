@@ -1,7 +1,7 @@
 <template>
-    <div class="container">
-        {{session}}
-        <div class="inpName" v-if="!show">
+    <div class="container" style="font-size: 20px">
+        建设中.......
+        <!--<div class="inpName" v-if="!show">
             <p>输入一个昵称可进入聊天室:</p>
             <input type="text" v-model="name">
             <Button @click="submitName">→</Button>
@@ -13,7 +13,7 @@
                 <Icon type="ios-paper-plane-outline" />
                 <span>Send</span>
             </button>
-        </div>
+        </div>-->
     </div>
 </template>
 
@@ -30,14 +30,14 @@
             }
         },
         created(){
-            this.getSession();
+            // this.getSession();
 
         },
         destroyed(){
             /*销毁时关闭*/
-            if(this.socket.close){
+            /*if(this.socket.close){
                 this.socket.close();
-            }
+            }*/
         },
         methods:{
             getSession(){

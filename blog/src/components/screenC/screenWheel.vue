@@ -2,7 +2,6 @@
     <div>
         <ul ref="list" id="list">
             <li>
-                <h1>{{$store.state.session}}</h1>
                 <v-njzy></v-njzy>
             </li>
             <li>

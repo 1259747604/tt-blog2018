@@ -8,6 +8,10 @@ const chat = require('../control/chat');//聊天相关
 
 /*实例化Router*/
 const router = new Router;
+/*测试*/
+router.get('/test',async (ctx) =>{
+    ctx.body = '测试数据'
+});
 
 /*路由配置*/
 /*首页请求*/

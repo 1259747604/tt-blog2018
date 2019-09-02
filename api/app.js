@@ -6,6 +6,9 @@ const static = require('koa-static');//静态资源
 const {join} = require('path');
 const KoaSession = require('koa-session');//session
 const chat = require('./control/chat');//聊天
+// const history = require('connect-history-api-fallback');
+// const historyApiFallback = require('koa2-connect-history-api-fallback');
+const historyFallback = require('koa2-history-api-fallback');
 
 /*操作数据库*/
 const {db} = require('./Schema/config');
@@ -15,6 +18,7 @@ const encrypt = require('./util/encrypt');
 /*实例化koa*/
 const app = new Koa;
 
+app.use(historyFallback());
 /*cors跨域*/
 app.use(cors({
     // origin:"http://localhost:8080",

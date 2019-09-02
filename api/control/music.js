@@ -168,7 +168,7 @@ exports.musicSelectOne = async (ctx) => {
 /*获取选中的音乐*/
 exports.musicName = async (ctx) => {
     const data = await MusicS.find()
-        .populate('selectName','_id name')
+        .populate('selectName','_id name pathName')
         .then(data => data)
         .catch(err => console.log(err));
 
@@ -189,6 +189,8 @@ exports.indexMusic = async (ctx) => {
     const {pathName,pathLrc,lrcSource} = data;
 
     //读取数据
+    // let lrc = fs.readFileSync(join(`./static/lrc/${pathLrc}`));
+
     let lrc = await new Promise((resolve, reject) => {
         fs.readFile(join(`./static/lrc/${pathLrc}`),(err,data)=>{
             if(err){
@@ -208,7 +210,8 @@ exports.indexMusic = async (ctx) => {
         })
     })
         .then(data => data);
-    let music = await new Promise((resolve, reject) => {
+    // let music = fs.readFileSync(join(`./static/music/${pathName}`));
+/*    let music = await new Promise((resolve, reject) => {
         fs.readFile(join(`./static/music/${pathName}`),(err,data)=>{
             if(err){
                 reject(err);
@@ -217,11 +220,11 @@ exports.indexMusic = async (ctx) => {
                 resolve(data);
             }
         })
-    }).then(data => data);
+    }).then(data => data);*/
 
     ctx.body = {
         lrc,
-        music,
+        // music,
         lrcSource
     };
 };

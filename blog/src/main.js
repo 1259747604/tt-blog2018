@@ -18,7 +18,8 @@ import 'highlight.js/styles/Atom-One-Dark-Reasonable.css'
 Vue.config.productionTip = false;
 
 /*基本请求地址*/
-axios.defaults.baseURL = 'http://127.0.0.1:3000';
+// axios.defaults.baseURL = 'localhost:3000';
+axios.defaults.baseURL = 'http://49.235.150.225:3000';
 Vue.prototype.$axios = axios;
 axios.defaults.withCredentials = true;
 

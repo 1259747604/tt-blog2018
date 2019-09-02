@@ -146,7 +146,8 @@
                 };
             },
             uploadUrl(){
-                return 'http://localhost:3000/upload/artImg';
+                // return 'localhost:3000/upload/artImg';
+                return 'http://49.235.150.225:3000/upload/artImg';
             },
             uploadConfig(){
                 const _this = this;

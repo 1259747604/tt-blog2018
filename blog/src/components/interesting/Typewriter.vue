@@ -13,7 +13,11 @@
                 <div v-else @click="pause" class="musicP"><Icon type="logo-playstation" size="70"/></div>
             </div>
         </div>
-        <Spin size="large" fix v-if="loadShow"></Spin>
+        <!--<Spin size="large" fix v-if="loadShow">静等</Spin>-->
+        <Spin size="large" fix v-if="loadShow">
+            <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
+            <div>静等1分钟</div>
+        </Spin>
     </div>
 </template>
 
@@ -106,19 +110,35 @@
                             this.selectId = data.data.data[0].selectName._id;
 
                             //得到id 获取数据
-                            this.getData();
+                            this.getData(data.data.data[0].selectName.pathName);
                         }
                     });
             },
-            getData(){
-                this.$axios.get(`${this.url}/${this.selectId}`)
+            getData(pathName){
+                /*this.$axios.get(`${this.url}/${this.selectId}`)
                     .then(data => {
+                        console.log(data);
                         data = data.data;
                         this.lrc = data.lrc;
                         let buffer = data.music.data;
                         const lrcSource = data.lrcSource;
 
                         this.getAudio(buffer);
+                        if(lrcSource === 'qq'){
+                            this.QQ_filter();
+                        }
+                        else if(lrcSource === '网易'){
+                            this.WY_filter();
+                        }
+                    });*/
+                this.$axios.get(`${this.url}/${this.selectId}`)
+                    .then(data => {
+                        data = data.data;
+                        this.lrc = data.lrc;
+                        // let buffer = data.music.data;
+                        const lrcSource = data.lrcSource;
+
+                        this.getAudio(pathName);
                         if(lrcSource === 'qq'){
                             this.QQ_filter();
                         }
@@ -209,8 +229,25 @@
                 return [arr1, arr2];
             },
             //将buffer转换成arraybuffer audio src赋值
-            getAudio(b){
-                //将buffer转换成arraybuffer
+            getAudio(p){
+                const _this = this;
+                const xhr = new XMLHttpRequest();
+                xhr.responseType = "arraybuffer";
+                xhr.onload= function(){
+                    if(xhr.readyState === 4 && xhr.status === 200){
+                        const blob = new Blob([xhr.response],{type:"application/octet-stream"});
+                        const url = window.URL.createObjectURL(blob);
+                        _this.src = url;
+                    }
+                    else{
+                        console.log(xhr.status);
+                    }
+                };
+                xhr.open("get",`http://49.235.150.225:3000/music/${p}`,true);
+                // xhr.open("get",`localhost:3000/music/${p}`,true);
+                xhr.send();
+
+                /*//将buffer转换成arraybuffer
                 const ab = new ArrayBuffer(b.length);
                 const view = new Uint8Array(ab);
                 for (let i = 0; i < b.length; i++) {
@@ -219,7 +256,7 @@
                 const blob = new Blob([ab],{type:"application/octet-stream"});
                 const url = window.URL.createObjectURL(blob);//得到一个链接
 
-                this.src = url;
+                this.src = url;*/
             },
             //播放
             play(){
@@ -335,6 +372,14 @@
         position: relative;
         width: 100%;
         height: 100%;
+    }
+    .demo-spin-icon-load{
+        animation: ani-demo-spin 1s linear infinite;
+    }
+    @keyframes ani-demo-spin {
+        from { transform: rotate(0deg);}
+        50%  { transform: rotate(180deg);}
+        to   { transform: rotate(360deg);}
     }
     .play{
         position: absolute;

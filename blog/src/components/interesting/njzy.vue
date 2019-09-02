@@ -2,15 +2,16 @@
     <div class="container">
         <ul>
             <li>
-                <span>致</span>
+                <span>我</span>
             </li>
             <li>
                 <div>
-                    <canvas class="one"></canvas>
+                    <!--<canvas class="one"></canvas>-->
+                想
                 </div>
             </li>
             <li>
-                <span>远</span>
+                <span>静</span>
             </li>
             <li style="border-bottom-right-radius: 42em 81em;">
                 <span>静</span>

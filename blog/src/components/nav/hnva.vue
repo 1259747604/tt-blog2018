@@ -11,7 +11,7 @@
             </MenuItem>
             <MenuItem name="4">
                 <Icon type="logo-buffer" size="24"/>
-                个人案例
+                <a href="http://www.ttistt.com/htdocs/index1.html" style="color: black" target="_blank">个人案例</a>
             </MenuItem>
         </Menu>
     </div>

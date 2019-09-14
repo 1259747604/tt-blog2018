@@ -7,7 +7,7 @@
             <li>
                 <div>
                     <!--<canvas class="one"></canvas>-->
-                想
+                    <span>想</span>
                 </div>
             </li>
             <li>
